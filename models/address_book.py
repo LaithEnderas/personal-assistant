@@ -1,5 +1,5 @@
 from collections import UserDict
-from record import Record
+from models.record import Record
 from datetime import datetime
 
 
