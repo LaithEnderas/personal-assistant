@@ -3,10 +3,13 @@ from cli.decorators import input_error
 from cli.commands import (
     add_contact, change_contact, search_contacts, show_all_contacts,
     add_birthday, show_birthday, birthdays, delete_contact,
-    add_note, delete_note, search_notes,
-    add_email, edit_email, add_address, edit_address,
-    add_tag, sort_notes_by_tag, search_by_tag  
+    add_note, delete_note, search_notes, add_email, change_email, add_address, edit_address,
 )
+from models.note import (Note, Notebook)
+"""
+Закоментовано команди, які мають бути реалізовані пізніше в рамках додаткового завдання:
+add_tag, sort_notes_by_tag, analyze_input
+"""
 
 @input_error
 def command_loop(book, notebook):
@@ -26,38 +29,34 @@ def command_loop(book, notebook):
             print(search_contacts(args, book))
         elif command == "all":
             print(show_all_contacts(book))
-        elif command == "add_birthday":
+        elif command == "add-birthday":
             print(add_birthday(args, book))
-        elif command == "show_birthday":
+        elif command == "show-birthday":
             print(show_birthday(args, book))
         elif command == "birthdays":
             days = int(args[0]) if args else 7
-            print(birthdays(book, days))
+            print(birthdays(args, book))
         elif command == "delete":
             print(delete_contact(args, book))
-        elif command == "add_note":
+        elif command == "add-note":
             print(add_note(args, notebook))
-        elif command == "delete_note":
+        elif command == "delete-note":
             print(delete_note(args, notebook))
-        elif command == "search_notes":
+        elif command == "search-note":
             print(search_notes(args, notebook))
-        elif command == "add_email":
+        elif command == "add-email":
             print(add_email(args, book))
-        elif command == "edit_email":
-            print(edit_email(args, book))
-        elif command == "add_address":
+        elif command == "edit-email":
+            print(change_email(args, book))
+        elif command == "add-address":
             print(add_address(args, book))
-        elif command == "edit_address":
-            print(edit_address(args, book))
-        elif command == "add_tag":
-            print(add_tag(args, notebook))  
-        elif command == "search_by_tag":
-            print(search_by_tag(args, notebook))  
-        elif command == "sort_notes_by_tag":
-            print(sort_notes_by_tag(notebook))  
-#       elif command == "analyze_input":
+        elif command == "edit-address":
+            print(edit_address(args, book)) 
+#        elif command == "add_tag":
+#           print(Note.add_tag(args, book, notebook))
+#        elif command == "sort-notes-by-tag":
+#           print(Notebook.sort_notes_by_tag(args, book, notebook))
+#       elif command == "analyze":
 #           print(analyze_input(args, book, notebook))
         else:
             print("Invalid command.")
-
-

@@ -153,7 +153,7 @@ def delete_contact(args: list, book: AddressBook) -> str:
     if not record:
         return f"Contact with name '{name}' not found."
 
-    book.delete(name)
+    book.delete(record.name.value)
     return f"Contact '{name}' has been deleted."
 
 # Додає нову нотатку до блокнота
@@ -236,7 +236,7 @@ def add_email(args: list, book: AddressBook) -> str:
     return f"Email for {name} added: {email}"
 
 @input_error
-def edit_email(args: list, book: AddressBook) -> str:
+def change_email(args: list, book: AddressBook) -> str:
     if len(args) < 3:
         return "Enter name, old email, and new email: edit_email Name old@example.com new@example.com"
 

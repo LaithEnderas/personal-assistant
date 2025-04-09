@@ -12,9 +12,9 @@ class AddressBook(UserDict):
         query = query.lower()
         for record in self.data.values():
             attributes = [
-                record.name.value.lower(),
-                record.email.value.lower() if record.email else "",
-                record.address.value.lower() if record.address else "",
+                str(record.name.value).lower(),
+                str(record.email.value).lower() if record.email else "",
+                str(record.address.value).lower() if record.address else "",
                 record.birthday.value.strftime('%d.%m.%Y') if record.birthday else "",
             ]
             attributes.extend([phone.value for phone in record.phones])     # Оскільки phones - це вже список, ми використовуємо extend
@@ -23,11 +23,10 @@ class AddressBook(UserDict):
         return results
 
     def delete(self, name: str):
-        record = self.data.get(name)
-        if record:
+        if name in self.data:
             del self.data[name]
-            return record
-        return None
+            #return True
+        #return False
 
     def get_upcoming_birthdays(self, days: int):
         upcoming_birthdays = []
