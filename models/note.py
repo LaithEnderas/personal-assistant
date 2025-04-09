@@ -29,9 +29,9 @@ class Notebook:
 
     def add_note(self, note: Note):
         if any(existing.title == note.title for existing in self.notes):
-            return f"Note with title '{note.title}' already exists."
+            return None
         self.notes.append(note)
-        return f"Note '{note.title}' was added."
+        return note
 
     def search_notes(self, query: str):
         return [
@@ -43,15 +43,15 @@ class Notebook:
         for note in self.notes:
             if note.title == title:
                 self.notes.remove(note)
-                return f"Note '{title}' was successfully deleted."
-        return f"Note '{title}' not found."
+                return note
+        return None
 
     def edit_note(self, title: str, new_text: str):
         for note in self.notes:
             if note.title == title:
                 note.edit_text(new_text)
-                return f"Note '{title}' was updated."
-        return f"Note '{title}' not found."
+                return note
+        return None
 
     def find_by_tag(self, tag: str):
         return [note for note in self.notes if tag in note.tags]
