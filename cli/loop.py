@@ -1,9 +1,11 @@
 from cli.parser import parse_command
 from cli.decorators import input_error
 from cli.commands import (
-    add_contact, change_contact, search_contacts, show_all_contacts, add_tag, sort_notes_by_tag,
+    add_contact, change_contact, search_contacts, show_all_contacts,
     add_birthday, show_birthday, birthdays, delete_contact,
-    add_note, delete_note, search_notes, add_email, edit_email, add_address, edit_address
+    add_note, delete_note, search_notes,
+    add_email, edit_email, add_address, edit_address,
+    add_tag, sort_notes_by_tag, search_by_tag  
 )
 """
 Закоментовано команди, які мають бути реалізовані пізніше в рамках додаткового завдання: analyze_input
@@ -49,12 +51,15 @@ def command_loop(book, notebook):
         elif command == "add-address":
             print(add_address(args, book))
         elif command == "edit-address":
-            print(edit_address(args, book))     
-       elif command == "add-tag":
-            print(add_tag(args, notebook))
-       elif command == "sort-notes-by-tag":
-            print(sort_notes_by_tag(args, book, notebook))
+            print(edit_address(args, book))
+        elif command == "add-tag":
+            print(add_tag(args, notebook))  
+        elif command == "search-by-tag":
+            print(search_by_tag(args, notebook))  
+        elif command == "sort-notes-by-tag":
+            print(sort_notes_by_tag(notebook))  
 #       elif command == "analyze":
 #           print(analyze_input(args, book, notebook))
         else:
             print("Invalid command.")
+
