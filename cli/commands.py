@@ -2,161 +2,151 @@ from cli.decorators import input_error
 from models.address_book import AddressBook
 from models.fields import Phone, Name
 from models.note import Notebook, Note
+from models.record import Record
 """
 Функції, які відповідають за виконання команд:
 - add, change, show, delete
 - note-add, note-delete
 - birthdays
 """
-# @input_error
-# def add_contact(args: list, book: AddressBook):
-#     if len(args) < 2:
-#         return "Enter name and phone: add_contact Name 0123456789"
-    
-#     name, phone = args[0], args[1]
-#     record = book.find(name)
-    
-#     if not record:
-#         record = Record(Name(name))
-#         book.add_record(record)
-#         message = "Contact added."
-#     else:
-#         message = "New number added to existing contact."
-    
-#     record.add_phone(phone)
-#     return message
+# Додає новий контакт або телефон до існуючого
+@input_error
+def add_contact(args: list, book: AddressBook) -> str:
+    if len(args) < 2:
+        return "Enter name and phone: add_contact Name 0123456789"
 
-# @input_error
-# def change_contact(args: list, book: AddressBook):
-#     if len(args) < 3:
-#         return "Enter name, old phone, and new phone: change_contact Name 0987654321 0501234567"
-    
-#     name, old_phone, new_phone = args[0], args[1], args[2]
-#     record = book.find(name)
-    
-#     if not record:
-#         return f"Contact with name '{name}' not found."
-    
-#     updated = record.edit_phone(old_phone, new_phone)
-#     if updated:
-#         return "Phone number updated."
-#     else:
-#         return "Old number not found."
+    name, phone = args[0], args[1]
+    record_list = book.find(name)
+    record = record_list[0] if record_list else None
 
-# @input_error
-# def phone_username(args: list, book: AddressBook):
-#     if not args:
-#         return "Enter contact name: phone Name"
-    
-#     name = args[0]
-#     record = book.find(name)
-    
-#     if not record:
-#         return f"Contact with name '{name}' not found."
-    
-#     phones = ", ".join(p.value for p in record.phones)
-#     return  f"{name}'s phone numbers: {phones}" if phones else f"Contact '{name}' has no phone numbers."
+    if not record:
+        record = Record(Name(name))
+        book.add_record(record)
+        message = "Contact added."
+    else:
+        message = "New number added to existing contact."
 
-# @input_error
-# def show_all_contacts(book: AddressBook):
+    record.add_phone(phone)
+    return message
 
+@input_error
+def change_contact(args: list, book: AddressBook) -> str:
+    if len(args) < 3:
+        return "Enter name, old phone, and new phone: change_contact Name 0987654321 0501234567"
 
-#     if not book.data:
-#         return "No contacts available."
-    
-#     lines = ["Contacts:", "-" * 30] # виведення заголовка Contacts
-#     for record in book.data.values():
-#         lines.append(f"Name: {record.name.value}")
-        
-#         phones = ", ".join(p.value for p in record.phones)
-#         lines.append(f"Phones: {phones if phones else 'None'}")
-        
-#         if record.birthday:
-#             lines.append(f"Birthday: {record.birthday.value.strftime('%d.%m.%Y')}")
-#         else:
-#             lines.append("Birthday: Not set") # Якщо поле відсутнє 
+    name, old_phone, new_phone = args[0], args[1], args[2]
+    record_list = book.find(name)
+    record = record_list[0] if record_list else None
 
-#         if record.email:
-#             lines.append(f"Email: {record.email.value}")
-#         else:
-#             lines.append("Email: Not set")
+    if not record:
+        return f"Contact with name '{name}' not found."
 
-#         if record.address:
-#             lines.append(f"Address: {record.address.value}")
-#         else:
-#             lines.append("Address: Not set")
+    updated = record.edit_phone(old_phone, new_phone)
+    return "Phone number updated." if updated else "Old number not found."
 
-#         lines.append("")
+@input_error
+def phone_username(args: list, book: AddressBook) -> str:
+    if not args:
+        return "Enter contact name: phone Name"
 
-#     return "\n".join(lines).strip()
+    name = args[0]
+    record_list = book.find(name)
+    record = record_list[0] if record_list else None
 
-# @input_error
-# def delete_contact(args: list, book: AddressBook):
-#     if not args:
-#         return "Enter the name of the contact to delete: delete_contact Name"
-    
-#     name = args[0]
-#     record = book.find(name)
-    
-#     if not record:
-#         return f"Contact with name '{name}' not found."
-    
-#     book.delete(name)
-#     return f"Contact '{name}' has been deleted."
+    if not record:
+        return f"Contact with name '{name}' not found."
 
-# @input_error
-# def add_birthday(args: list, book: AddressBook):
-#     if len(args) < 2:
-#         return "Enter name and birthday (DD.MM.YYYY): add_birthday Name 01.01.2000"
+    phones = ", ".join(p.value for p in record.phones)
+    return f"{name}'s phone numbers: {phones}" if phones else f"Contact '{name}' has no phone numbers."
 
-#     name, birthday_str = args[0], args[1]
-#     record = book.find(name)
+@input_error
+def show_all_contacts(book: AddressBook) -> str:
+    if not book.data:
+        return "No contacts available."
 
-#     if not record:
-#         return f"Contact with name '{name}' not found."
+    lines = ["Contacts:", "-" * 30]
+    for record in book.data.values():
+        lines.append(f"Name: {record.name.value}")
 
-#     try:
-#         record.add_birthday(birthday_str)
-#         return f"Birthday for {name} added: {birthday_str}"
-#     except ValueError as e:
-#         return str(e)
-    
-# @input_error
-# def show_birthday(args: list, book: AddressBook):
-#     if not args:
-#         return "Enter contact name: show_birthday Name"
+        phones = ", ".join(p.value for p in record.phones)
+        lines.append(f"Phones: {phones if phones else 'None'}")
 
-#     name = args[0]
-#     record = book.find(name)
+        lines.append(f"Birthday: {record.birthday.value.strftime('%d.%m.%Y') if record.birthday else 'Birthday: Not set'}")
+        lines.append(f"Email: {record.email.value if record.email else 'Email: Not set'}")
+        lines.append(f"Address: {record.address.value if record.address else 'Address: Not set'}")
+        lines.append("")
 
-#     if not record:
-#         return f"Contact with name '{name}' not found."
+    return "\n".join(lines).strip()
 
-#     if not record.birthday:
-#         return f"{name} has no birthday set."
+@input_error
+def add_birthday(args: list, book: AddressBook) -> str:
+    if len(args) < 2:
+        return "Enter name and birthday (DD.MM.YYYY): add_birthday Name 01.01.2000"
 
-#     return f"{name}'s birthday is {record.birthday.value.strftime('%d.%m.%Y')}"
+    name, birthday_str = args[0], args[1]
+    record_list = book.find(name)
+    record = record_list[0] if record_list else None
 
-# @input_error
-# def birthdays(args: list, book: AddressBook):
-#     day = 7 # дефолтне значення при введені команди без агрументів
-    
-#     if args:
-#         try:
-#             days = int(args[0])
-#         except ValueError:
-#             return "Please enter a number: birthdays 10"
-#     result = book.get_upcoming_birthdays(days)
-    
-#     if not any(result.values()):
-#         return f"No upcoming birthdays in the next {days} days."
-    
-#     lines = [f"Birthdays in the next {days} days:"]
-#     for day, names in result.items():
-#         if names:
-#             lines.append(f"{day}: {', '.join(names)}")
-    
-#     return "\n".join(lines).strip()
+    if not record:
+        return f"Contact with name '{name}' not found."
+
+    try:
+        record.add_birthday(birthday_str)
+        return f"Birthday for {name} added: {birthday_str}"
+    except ValueError as e:
+        return str(e)
+
+@input_error
+def show_birthday(args: list, book: AddressBook) -> str:
+    if not args:
+        return "Enter contact name: show_birthday Name"
+
+    name = args[0]
+    record_list = book.find(name)
+    record = record_list[0] if record_list else None
+
+    if not record:
+        return f"Contact with name '{name}' not found."
+
+    if not record.birthday:
+        return f"{name} has no birthday set."
+
+    return f"{name}'s birthday is {record.birthday.value.strftime('%d.%m.%Y') }"
+
+@input_error
+def birthdays(args: list, book: AddressBook) -> str:
+    days = 7
+    if args:
+        try:
+            days = int(args[0])
+        except ValueError:
+            return "Please enter a number: birthdays 10"
+
+    result = book.get_upcoming_birthdays(days)
+
+    if not result:
+        return f"No upcoming birthdays in the next {days} days."
+
+    lines = [f"Birthdays in the next {days} days:"]
+    for entry in result:
+        lines.append(f"{entry['congratulation_date']}: {entry['name']}")
+
+    return "\n".join(lines).strip()
+
+@input_error
+def delete_contact(args: list, book: AddressBook) -> str:
+    if not args:
+        return "Enter the name of the contact to delete: delete_contact Name"
+
+    name = args[0]
+    record_list = book.find(name)
+    record = record_list[0] if record_list else None
+
+    if not record:
+        return f"Contact with name '{name}' not found."
+
+    book.delete(name)
+    return f"Contact '{name}' has been deleted."
 
 # Додає нову нотатку до блокнота
 @input_error
