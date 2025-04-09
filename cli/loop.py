@@ -7,7 +7,7 @@ from cli.commands import (
 )
 """
 Закоментовано команди, які мають бути реалізовані пізніше в рамках додаткового завдання:
-tag_note, sort_notes_by_tag, analyze_input
+add_tag, sort_notes_by_tag, analyze_input
 """
 
 @input_error
@@ -43,8 +43,8 @@ def command_loop(book, notebook):
             print(delete_note(args, notebook))
         elif command == "search-note":
             print(search_notes(args, notebook))
-#       elif command == "tag-note":
-#           print(tag_note(args, book, notebook))
+#       elif command == "add_tag":
+#           print(add_tag(args, book, notebook))
 #       elif command == "sort-notes-by-tag":
 #           print(sort_notes_by_tag(args, book, notebook))
 #       elif command == "analyze":
