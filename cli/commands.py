@@ -45,19 +45,27 @@ def change_contact(args: list, book: AddressBook) -> str:
     return "Phone number updated." if updated else "Old number not found."
 
 @input_error
-def phone_username(args: list, book: AddressBook) -> str:
+def search_contacts(args: list, book: AddressBook) -> str:
     if not args:
-        return "Enter contact name: phone Name"
+        return "Enter a search keyword: search John"
 
-    name = args[0]
-    record_list = book.find(name)
-    record = record_list[0] if record_list else None
+    keyword = " ".join(args)
+    found_records = book.find(keyword)
 
-    if not record:
-        return f"Contact with name '{name}' not found."
+    if not found_records:
+        return f"No contacts found matching: '{keyword}'"
 
-    phones = ", ".join(p.value for p in record.phones)
-    return f"{name}'s phone numbers: {phones}" if phones else f"Contact '{name}' has no phone numbers."
+    lines = [f"Contacts matching '{keyword}':", "-" * 30]
+    for record in found_records:
+        lines.append(f"Name: {record.name.value}")
+        phones = ", ".join(p.value for p in record.phones)
+        lines.append(f"Phones: {phones if phones else 'None'}")
+        lines.append(f"Birthday: {record.birthday.value.strftime('%d.%m.%Y') if record.birthday else 'Not set'}")
+        lines.append(f"Email: {record.email.value if record.email else 'Not set'}")
+        lines.append(f"Address: {record.address.value if record.address else 'Not set'}")
+        lines.append("")
+
+    return "\n".join(lines).strip()
 
 @input_error
 def show_all_contacts(book: AddressBook) -> str:
