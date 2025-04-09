@@ -1,10 +1,13 @@
 from cli.parser import parse_command
 from cli.decorators import input_error
 from cli.commands import (
-    add_contact, change_contact, phone_username,
-    add_birthday, show_birthday, birthdays, show_all_contacts
+    add_contact, change_contact, phone_username, show_all_contacts,
+    add_birthday, show_birthday, birthdays, delete_contact,
+    add_note, delete_note, search_notes,
 )
-
+"""
+закоментовано команди, які мають бути реалізовані пізніше в рамках додаткового завдання: tag_note, sort_notes_by_tag, analyze_input
+"""
 @input_error
 def command_loop(book):
     while True:
@@ -29,5 +32,19 @@ def command_loop(book):
             print(show_birthday(args, book))
         elif command == "birthdays":
             print(birthdays(args, book))
+        elif command == "delete":
+            print(delete_contact(args, book))
+        elif command == "add-note":
+            print(add_note(args, book))
+        elif command == "delete-note":
+            print(delete_note(args, book))
+        elif command == "search-note":
+            print(search_notes(args, book))
+ #       elif command == "tag-note":
+ #           print(tag_note(args, book))
+ #       elif command == "sort-notes-by-tag":
+ #           print(sort_notes_by_tag(args, book))
+ #       elif command == "analyze": 
+ #           print(analyze_input(args, book))
         else:
             print("Invalid command.")
