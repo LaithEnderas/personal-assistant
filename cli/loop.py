@@ -1,7 +1,8 @@
 from cli.parser import parse_command
 from cli.decorators import input_error
 from cli.commands import (
-    add_contact, change_contact, search_contacts, show_all_contacts,
+    add_contact, change_contact, #search_contacts, тимчасово закомментовано
+    show_all_contacts,
     add_birthday, show_birthday, birthdays, delete_contact,
     add_note, delete_note, search_notes,
 )
