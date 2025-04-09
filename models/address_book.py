@@ -23,10 +23,11 @@ class AddressBook(UserDict):
         return results
 
     def delete(self, name: str):
-        if name in self.data:
+        record = self.data.get(name)
+        if record:
             del self.data[name]
-            return f"Contact {name} has been deleted."
-        return f"No contact with the name {name} was found."
+            return record
+        return None
 
     def get_upcoming_birthdays(self, days: int):
         upcoming_birthdays = []
