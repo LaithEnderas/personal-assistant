@@ -3,7 +3,7 @@ from cli.decorators import input_error
 from cli.commands import (
     add_contact, change_contact, search_contacts, show_all_contacts,
     add_birthday, show_birthday, birthdays, delete_contact,
-    add_note, delete_note, search_notes,
+    add_note, delete_note, search_notes, add_email, edit_email, add_address, edit_address
 )
 """
 Закоментовано команди, які мають бути реалізовані пізніше в рамках додаткового завдання:
@@ -43,6 +43,14 @@ def command_loop(book, notebook):
             print(delete_note(args, notebook))
         elif command == "search-note":
             print(search_notes(args, notebook))
+        elif command == "add-email":
+            print(add_email(args, book))
+        elif command == "edit-email":
+            print(edit_email(args, book))
+        elif command == "add-address":
+            print(add_address(args, book))
+        elif command == "edit-address":
+            print(edit_address(args, book))     
 #       elif command == "add_tag":
 #           print(add_tag(args, book, notebook))
 #       elif command == "sort-notes-by-tag":
