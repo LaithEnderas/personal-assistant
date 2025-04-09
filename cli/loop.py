@@ -1,13 +1,15 @@
 from cli.parser import parse_command
 from cli.decorators import input_error
 from cli.commands import (
-    add_contact, change_contact, phone_username, show_all_contacts,
+    add_contact, change_contact, search_contacts, show_all_contacts,
     add_birthday, show_birthday, birthdays, delete_contact,
     add_note, delete_note, search_notes,
 )
 """
-закоментовано команди, які мають бути реалізовані пізніше в рамках додаткового завдання: tag_note, sort_notes_by_tag, analyze_input
+Закоментовано команди, які мають бути реалізовані пізніше в рамках додаткового завдання:
+tag_note, sort_notes_by_tag, analyze_input
 """
+
 @input_error
 def command_loop(book, notebook):
     while True:
@@ -22,8 +24,8 @@ def command_loop(book, notebook):
             print(add_contact(args, book))
         elif command == "change":
             print(change_contact(args, book))
-        elif command == "phone":
-            print(phone_username(args, book))
+        elif command == "search":
+            print(search_contacts(args, book))
         elif command == "all":
             print(show_all_contacts(book))
         elif command == "add-birthday":
@@ -31,7 +33,8 @@ def command_loop(book, notebook):
         elif command == "show-birthday":
             print(show_birthday(args, book))
         elif command == "birthdays":
-            print(birthdays(args, book))
+            days = int(args[0]) if args else 7
+            print(birthdays(book, days))
         elif command == "delete":
             print(delete_contact(args, book))
         elif command == "add-note":
@@ -40,11 +43,11 @@ def command_loop(book, notebook):
             print(delete_note(args, notebook))
         elif command == "search-note":
             print(search_notes(args, notebook))
- #       elif command == "tag-note":
- #           print(tag_note(args, book, notebook))
- #       elif command == "sort-notes-by-tag":
- #           print(sort_notes_by_tag(args, book, notebook))
- #       elif command == "analyze": 
- #           print(analyze_input(args, book, notebook))
+#       elif command == "tag-note":
+#           print(tag_note(args, book, notebook))
+#       elif command == "sort-notes-by-tag":
+#           print(sort_notes_by_tag(args, book, notebook))
+#       elif command == "analyze":
+#           print(analyze_input(args, book, notebook))
         else:
             print("Invalid command.")
