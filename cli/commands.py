@@ -219,3 +219,64 @@ def search_notes(args: list, notebook: Notebook):
     for idx, note in enumerate(results, start=1):
         lines.append(f"{idx}. {note.text}")
     return "\n".join(lines).strip()
+
+@input_error
+def add_email(args: list, book: AddressBook) -> str:
+    if len(args) < 2:
+        return "Enter name and email: add_email Name email@example.com"
+
+    name, email = args[0], args[1]
+    record_list = book.find(name)
+    record = record_list[0] if record_list else None
+
+    if not record:
+        return f"Contact with name '{name}' not found."
+
+    record.add_email(email)
+    return f"Email for {name} added: {email}"
+
+@input_error
+def edit_email(args: list, book: AddressBook) -> str:
+    if len(args) < 3:
+        return "Enter name, old email, and new email: edit_email Name old@example.com new@example.com"
+
+    name, old_email, new_email = args[0], args[1], args[2]
+    record_list = book.find(name)
+    record = record_list[0] if record_list else None
+
+    if not record or not record.email:
+        return f"Contact with name '{name}' not found or email not set."
+
+    record.edit_email(old_email, new_email)
+    return f"Email for {name} updated to: {new_email}"
+
+@input_error
+def add_address(args: list, book: AddressBook) -> str:
+    if len(args) < 2:
+        return "Enter name and address: add_address Name Some Street 123"
+
+    name, address = args[0], " ".join(args[1:])
+    record_list = book.find(name)
+    record = record_list[0] if record_list else None
+
+    if not record:
+        return f"Contact with name '{name}' not found."
+
+    record.add_address(address)
+    return f"Address for {name} added: {address}"
+
+@input_error
+def edit_address(args: list, book: AddressBook) -> str:
+    if len(args) < 3:
+        return "Enter name, old address, and new address: edit_address Name Old St 1 New St 2"
+
+    name, old_address = args[0], args[1]
+    new_address = " ".join(args[2:])
+    record_list = book.find(name)
+    record = record_list[0] if record_list else None
+
+    if not record or not record.address:
+        return f"Contact with name '{name}' not found or address not set."
+
+    record.edit_address(old_address, new_address)
+    return f"Address for {name} updated to: {new_address}"
