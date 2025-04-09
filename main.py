@@ -6,7 +6,7 @@ def main():
     try:
         command_loop(book, notebook)
     finally:
-        save_data(book)
+        save_data(book, notebook)
         print("Good bye!")
 
 if __name__ == "__main__":
