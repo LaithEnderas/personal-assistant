@@ -50,10 +50,10 @@ def command_loop(book, notebook):
             print(add_address(args, book))
         elif command == "edit-address":
             print(edit_address(args, book))     
-       elif command == "add_tag":
-           print(add_tag(args, book, notebook))
+       elif command == "add-tag":
+            print(add_tag(args, notebook))
        elif command == "sort-notes-by-tag":
-           print(sort_notes_by_tag(args, book, notebook))
+            print(sort_notes_by_tag(args, book, notebook))
 #       elif command == "analyze":
 #           print(analyze_input(args, book, notebook))
         else:
