@@ -10,6 +10,11 @@ import difflib
 - note-add, note-delete
 - birthdays
 """
+KNOWN_COMMANDS = [
+    "add", "change", "search", "all", "add-birthday", "show-birthday", "birthdays",
+    "delete", "add-note", "delete-note", "search-note", "add-email", "edit-email",
+    "add-address", "edit-address", "add-tag", "search-by-tag", "sort-notes-by-tag"
+]
 
 # ==================== ФУНКЦІЇ ДЛЯ РОБОТИ З ТЕЛЕФОНАМИ ===================================
 
