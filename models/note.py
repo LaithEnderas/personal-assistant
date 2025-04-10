@@ -59,28 +59,3 @@ class Notebook:
     def sort_notes_by_tag(self):
         return sorted(self.notes, key=lambda note: note.tags)
 
-
-### Testing class Note
-print()
-
-note1 = Note(title = "Моя перша нотатка", text = "Це текст моєї нотатки")
-print(note1)
-
-print()
-
-note1.add_tag("робота")
-note1.add_tag("важливо")
-print(note1)
-
-print()
-
-note1.remove_tag("робота")
-print(note1)
-
-print()
-
-note1.edit_text("Це змінена моя перша нотатка")
-print(note1)
-
-
-### Testing class Notebook
