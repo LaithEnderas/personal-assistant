@@ -5,7 +5,7 @@ from dataclasses import dataclass, field
 class Note:
     title: str
     text: str
-    tags: list[str] = field(default_factory=list)
+    tags: list[str] = field(default_factory=list)   # поле, яке містить список тегів. За замовчуванням воно ініціалізується як порожній список. Використання field(default_factory=list) гарантує, що кожна нова нотатка отримає окрему порожню колекцію для тегів, а не спільну для всіх нотаток.
 
     def __str__(self):
         tags_formatted = ", ".join(self.tags) if self.tags else "no tags"
@@ -28,7 +28,7 @@ class Notebook:
         self.notes = []
 
     def add_note(self, note: Note):
-        if any(existing.title == note.title for existing in self.notes):
+        if any(existing.title == note.title for existing in self.notes): # генератор перебирає кожну нотатку з self.notes (списку всіх нотаток у блокноті) і порівнює заголовки кожної з цих нотаток з заголовком нотатки, яку ми намагаємось додати
             return None
         self.notes.append(note)
         return note
@@ -58,3 +58,29 @@ class Notebook:
 
     def sort_notes_by_tag(self):
         return sorted(self.notes, key=lambda note: note.tags)
+
+
+### Testing class Note
+print()
+
+note1 = Note(title = "Моя перша нотатка", text = "Це текст моєї нотатки")
+print(note1)
+
+print()
+
+note1.add_tag("робота")
+note1.add_tag("важливо")
+print(note1)
+
+print()
+
+note1.remove_tag("робота")
+print(note1)
+
+print()
+
+note1.edit_text("Це змінена моя перша нотатка")
+print(note1)
+
+
+### Testing class Notebook
