@@ -35,7 +35,8 @@ class Record:
         for p in self.phones:
             if p.value == old_phone:
                 p.value = new_phone
-                break
+                return True
+        return False
 
     # 6.1.4 Пошук телефону в контакті
     def find_phone(self, phone):
@@ -53,12 +54,12 @@ class Record:
     # 6.2.2 Видалення дня народження з контакту
     def remove_birthday(self, birthday):
         if self.birthday.value == birthday:
-            self.birthday.value == None
+            self.birthday.value = None
 
     # 6.2.3 Редагування дня народження в контакті
     def edit_birthday(self, old_birthday, new_birthday):
         if self.birthday.value == old_birthday:
-            self.birthday.value == new_birthday
+            self.birthday.value = new_birthday
 
     # 6.2.4 Пошук дня народження в контакті
     def find_birthday(self, birthday):
@@ -75,12 +76,14 @@ class Record:
     # 6.3.2 Видалення електронної пошти з контакту
     def remove_email(self, email):
         if self.email.value == email:
-            self.email.value == None
+            self.email.value = None
             
     # 6.3.3 Редагування електронної пошти в контакті
     def edit_email(self, old_email, new_email):
         if self.email.value == old_email:
-            self.email.value == new_email
+            self.email.value = new_email
+            return True
+        return False
         
     # 6.3.4 Пошук електронної пошти в контакті
     def find_email(self, email):
@@ -97,12 +100,12 @@ class Record:
     # 6.4.2 Видалення адреси з контакту
     def remove_address(self, address):
         if self.address.value == address:
-            self.address.value == None
+            self.address.value = None
             
     # 6.4.3 Редагування адреси в контакті
     def edit_address(self, old_address, new_address):
         if self.address.value == old_address:
-            self.address.value == new_address
+            self.address.value = new_address
         
     # 6.4.4 Пошук дня адреси в контакті
     def find_address(self, address):
