@@ -3,7 +3,7 @@ from cli.decorators import input_error
 from cli.commands import (
     add_contact, change_contact, search_contacts, show_all_contacts,
     add_birthday, show_birthday, birthdays, delete_contact,
-    add_note, delete_note, search_notes, add_email, change_email, add_address, edit_address,
+    add_note, delete_note, search_notes, add_email, change_email, add_address, edit_address, add_tag, sort_notes_by_tag, edit_note, suggest_command
 )
 from models.note import (Note, Notebook)
 """
@@ -40,6 +40,8 @@ def command_loop(book, notebook):
             print(delete_contact(args, book))
         elif command == "add-note":
             print(add_note(args, notebook))
+        elif command == "edit-note":
+            print(edit_note(args, notebook))
         elif command == "delete-note":
             print(delete_note(args, notebook))
         elif command == "search-note":
@@ -52,11 +54,13 @@ def command_loop(book, notebook):
             print(add_address(args, book))
         elif command == "edit-address":
             print(edit_address(args, book)) 
-#        elif command == "add_tag":
-#           print(Note.add_tag(args, book, notebook))
-#        elif command == "sort-notes-by-tag":
-#           print(Notebook.sort_notes_by_tag(args, book, notebook))
-#       elif command == "analyze":
-#           print(analyze_input(args, book, notebook))
+        elif command == "add-tag":
+          print(add_tag(args, notebook))
+        elif command == "sort-notes-by-tag":
+           print(sort_notes_by_tag(args, notebook))
         else:
-            print("Invalid command.")
+            suggestion = suggest_command(command)
+            if suggestion:
+                print(f"Did you mean '{suggestion}'?")
+            else:
+                print("Invalid command.")
