@@ -5,7 +5,7 @@ from dataclasses import dataclass, field
 class Note:
     title: str
     text: str
-    tags: list[str] = field(default_factory=list)
+    tags: list[str] = field(default_factory=list)   # поле, яке містить список тегів. За замовчуванням воно ініціалізується як порожній список. Використання field(default_factory=list) гарантує, що кожна нова нотатка отримає окрему порожню колекцію для тегів, а не спільну для всіх нотаток.
 
     def __str__(self):
         tags_formatted = ", ".join(self.tags) if self.tags else "no tags"
@@ -28,10 +28,10 @@ class Notebook:
         self.notes = []
 
     def add_note(self, note: Note):
-        if any(existing.title == note.title for existing in self.notes):
-            return f"Note with title '{note.title}' already exists."
+        if any(existing.title == note.title for existing in self.notes): # генератор перебирає кожну нотатку з self.notes (списку всіх нотаток у блокноті) і порівнює заголовки кожної з цих нотаток з заголовком нотатки, яку ми намагаємось додати
+            return None
         self.notes.append(note)
-        return f"Note '{note.title}' was added."
+        return note
 
     def search_notes(self, query: str):
         return [
@@ -43,18 +43,19 @@ class Notebook:
         for note in self.notes:
             if note.title == title:
                 self.notes.remove(note)
-                return f"Note '{title}' was successfully deleted."
-        return f"Note '{title}' not found."
+                return note
+        return None
 
     def edit_note(self, title: str, new_text: str):
         for note in self.notes:
             if note.title == title:
                 note.edit_text(new_text)
-                return f"Note '{title}' was updated."
-        return f"Note '{title}' not found."
+                return note
+        return None
 
     def find_by_tag(self, tag: str):
         return [note for note in self.notes if tag in note.tags]
 
     def sort_notes_by_tag(self):
         return sorted(self.notes, key=lambda note: note.tags)
+
