@@ -71,11 +71,13 @@ personal-assistant/
 ├── cli/
 │   ├── commands.py
 │   ├── loop.py
+│   ├── decorators.py
 │   └── parser.py
 │
 ├── models/
 │   ├── address_book.py
 │   ├── note.py
+│   ├── fields.py
 │   └── record.py
 │
 ├── storage/
