@@ -3,7 +3,14 @@ from models.address_book import AddressBook
 from models.fields import Phone, Name
 from models.note import Notebook, Note
 from models.record import Record
+from datetime import datetime, timedelta
+from rich.console import Console
+from rich.table import Table
+from rich.text import Text
 import difflib
+
+
+
 """
 Функції, які відповідають за виконання команд:
 - add, change, show, delete
@@ -16,13 +23,22 @@ KNOWN_COMMANDS = [
     "add-address", "edit-address", "add-tag", "search-by-tag", "sort-notes-by-tag"
 ]
 
+console = Console()
+
+@input_error
+def help_command(*args):
+    from cli.rich_table import show_command_table
+    show_command_table()
+    return "Type a command to continue"
+
+
 # ==================== ФУНКЦІЇ ДЛЯ РОБОТИ З ТЕЛЕФОНАМИ ===================================
 
 # Додає новий контакт або телефон до існуючого
 @input_error
-def add_contact(args: list, book: AddressBook) -> str:
+def add_contact(args: list, book: AddressBook):
     if len(args) < 2:
-        return "Enter name and phone: add_contact Name 0123456789"
+        return "Enter name and phone: add-contact Name 0123456789"
 
     name, phone = args[0].capitalize(), args[1]
     record_list = book.find(name)
@@ -36,13 +52,13 @@ def add_contact(args: list, book: AddressBook) -> str:
         message = "New number added to existing contact."
 
     record.add_phone(phone)
-    return message
+    return(message)
 
 # Змінює старий контакт на новий
 @input_error
 def change_contact(args: list, book: AddressBook) -> str:
     if len(args) < 3:
-        return "Enter name, old phone, and new phone: change_contact Name 0987654321 0501234567"
+        return"Enter name, old phone, and new phone: change_contact Name 0987654321 0501234567"
 
     name, old_phone, new_phone = args[0], args[1], args[2]
     record_list = book.find(name)
@@ -54,12 +70,11 @@ def change_contact(args: list, book: AddressBook) -> str:
     updated = record.edit_phone(old_phone, new_phone)
     return "Phone number updated." if updated else "Old number not found."
 
-
 # Пошук контактів по будь-якому критерію, видає всі збіги
 @input_error
-def search_contacts(args: list, book: AddressBook) -> str:
+def search_contacts(args: list, book: AddressBook):
     if not args:
-        return "Enter a search keyword: search John"
+        return"Enter a search keyword: search John"
 
     keyword = " ".join(args)
     found_records = book.find(keyword)
@@ -67,29 +82,39 @@ def search_contacts(args: list, book: AddressBook) -> str:
     if not found_records:
         return f"No contacts found matching: '{keyword}'"
 
-    lines = [f"Contacts matching '{keyword}':", "-" * 30]
+    console = Console()
+    table = Table(title=f"Contacts matching '{keyword}'")
+    table.add_column("Name", style="cyan")
+    table.add_column("Phones", style="green")
+    table.add_column("Birthday", style="magenta")
+    table.add_column("Email", style="yellow")
+    table.add_column("Address", style="white")
+
     for record in found_records:
-        lines.append(f"Name: {record.name.value}")
-        phones = ", ".join(p.value for p in record.phones)
-        lines.append(f"Phones: {phones if phones else 'None'}")
-        lines.append(f"Birthday: {record.birthday.value.strftime('%d.%m.%Y') if record.birthday else 'Not set'}")
-        lines.append(f"Email: {record.email.value if record.email else 'Not set'}")
-        lines.append(f"Address: {record.address.value if record.address else 'Not set'}")
-        lines.append("")
+        name = str(record.name.value)
+        phones = ", ".join(p.value for p in record.phones) or "None"
+        birthday = record.birthday.value.strftime('%d.%m.%Y') if record.birthday else "Not set"
+        email = record.email.value if record.email else "Not set"
+        address = record.address.value if record.address else "Not set"
+        table.add_row(name, phones, birthday, email, address)
 
-    return "\n".join(lines).strip()
-
+    console.print(table)
+    return ""
 
 # Виводить усі контакти
 @input_error
-def show_all_contacts(book: AddressBook) -> str:
+def show_all_contacts(book: AddressBook):
     if not book.data:
-        return "No contacts available."
+        console.print("[bold yellow]No contacts available.[bold yellow]")
 
-    lines = ["Contacts:", "-" * 100]
-    header = f"{'Name':<20} {'Phones':<25} {'Birthday':<15} {'Email':<25} {'Address'}"
-    lines.append(header)
-    lines.append("-" * 100)
+    console = Console()
+    table = Table(title="All Contacts")
+
+    table.add_column("Name", style="cyan")
+    table.add_column("Phones", style="green")
+    table.add_column("Birthday", style="magenta")
+    table.add_column("Email", style="yellow")
+    table.add_column("Address", style="white")
 
     for record in book.data.values():
         name = str(record.name.value)
@@ -97,33 +122,33 @@ def show_all_contacts(book: AddressBook) -> str:
         birthday = record.birthday.value.strftime('%d.%m.%Y') if record.birthday else "Not set"
         email = record.email.value if record.email else "Not set"
         address = record.address.value if record.address else "Not set"
-        lines.append(f"{name:<20} {phones:<25} {birthday:<15} {email:<25} {address}")
+        table.add_row(name, phones, birthday, email, address)
 
-    return "\n".join(lines).strip()
+    console.print(table)
+    return ""
+
 
 # Видаляє контакт
 @input_error
-def delete_contact(args: list, book: AddressBook) -> str:
+def delete_contact(args: list, book: AddressBook):
     if not args:
         return "Enter the name of the contact to delete: delete_contact Name"
 
-    name = args[0]
-    record_list = book.find(name)
-    record = record_list[0] if record_list else None
+    name_input = args[0].strip().lower()
 
-    if not record:
-        return f"Contact with name '{name}' not found."
+    for name_obj in book.data:
+        if name_obj.value.lower() == name_input:
+            book.delete(name_obj)  # передаємо Name-об’єкт
+            return f"Contact '{name_obj.value}' has been deleted."
 
-    book.delete(record.name.value)
-    return f"Contact '{name}' has been deleted."
-
+    return f"Contact with name '{args[0]}' not found."
 
 
 # ==================== ФУНКЦІЇ ДЛЯ РОБОТИ З ДАТОЮ ДНЯ НАРОДЖЕННЯ ===================================
 
 # Додає день народження
 @input_error
-def add_birthday(args: list, book: AddressBook) -> str:
+def add_birthday(args: list, book: AddressBook):
     if len(args) < 2:
         return "Enter name and birthday (DD.MM.YYYY): add_birthday Name 01.01.2000"
 
@@ -141,10 +166,12 @@ def add_birthday(args: list, book: AddressBook) -> str:
         return str(e)
 
 # Виводить день народження контакту за іменем
+
 @input_error
-def show_birthday(args: list, book: AddressBook) -> str:
+def show_birthday(args: list, book: AddressBook):
     if not args:
-        return "Enter contact name: show_birthday Name"
+        return "Enter contact name: show-birthday Name"
+        
 
     name = args[0]
     record_list = book.find(name)
@@ -152,34 +179,43 @@ def show_birthday(args: list, book: AddressBook) -> str:
 
     if not record:
         return f"Contact with name '{name}' not found."
+        
 
     if not record.birthday:
         return f"{name} has no birthday set."
+        
 
-    return f"{name}'s birthday is {record.birthday.value.strftime('%d.%m.%Y') }"
-
+    birthday_str = record.birthday.value.strftime('%d.%m.%Y')
+    return f"{name}'s birthday is {birthday_str}"
 
 # Виводить список контактів в яких день народження за n-днів
 @input_error
 def birthdays(args: list, book: AddressBook) -> str:
-    days = 7
-    if args:
-        try:
-            days = int(args[0])
-        except ValueError:
-            return "Please enter a number: birthdays 10"
+    console = Console()
+
+    try:
+        days = int(args[0]) if args else 7
+    except ValueError:
+        return "Please enter a number: birthdays 10"
 
     result = book.get_upcoming_birthdays(days)
 
     if not result:
         return f"No upcoming birthdays in the next {days} days."
 
-    lines = [f"Birthdays in the next {days} days:", "-" * 40]
-    for entry in result:
-        lines.append(f"{entry['congratulation_date']:<15} {entry['name']}")
+    # Сортуємо за датою
+    sorted_result = sorted(result, key=lambda entry: datetime.strptime(entry['congratulation_date'], '%d.%m.%Y'))
 
-    return "\n".join(lines).strip()
+    # Побудова таблиці
+    table = Table(title=f"🎉 Birthdays in the next {days} days", title_style="bold magenta")
+    table.add_column("Date", style="cyan", justify="center")
+    table.add_column("Name", style="bold green")
 
+    for entry in sorted_result:
+        table.add_row(entry["congratulation_date"], str(entry["name"]))
+
+    console.print(table)
+    return ""  # Повертаємо порожній рядок, щоб не було None
 
 
 
@@ -202,31 +238,12 @@ def add_note(args: list, notebook: Notebook) -> str:
     else:
         return f"Note with title '{title}' already exists."
 
-# Показує всі нотатки
-@input_error
-def show_notes(args: list, notebook: Notebook) -> str:
-    if not notebook.notes:
-        return "No notes available."
-
-    lines = ["Notes:", "-" * 80]
-    header = f"{'Title':<20} {'Text':<40} {'Tags':<20}"
-    lines.append(header)
-    lines.append("-" * 80)
-
-    for note in notebook.notes:
-        title = note.title
-        text = (note.text[:37] + '...') if len(note.text) > 40 else note.text
-        tags = ", ".join(note.tags) if note.tags else ""
-        lines.append(f"{title:<20} {text:<40} {tags:<20}")
-
-    return "\n".join(lines).strip()
-
 
 # Видаляє нотатку за номером
 @input_error
 def delete_note(args: list, notebook: Notebook):
     if not args:
-        return "Enter the note title to delete: note_delete Title"
+        console.print("[bold yellow]Enter the note title to delete: note_delete Title[bold yellow]")
 
     title = args[0]
 
@@ -238,7 +255,7 @@ def delete_note(args: list, notebook: Notebook):
 @input_error
 def edit_note(args: list, notebook: Notebook):
     if len(args) < 2:
-        return "Enter note title and new text: note_edit Title Updated text"
+        console.print("[bold yellow]Enter note title and new text: note_edit Title Updated text[bold yellow]")
 
     title = args[0]
     new_text = " ".join(args[1:])
@@ -250,20 +267,29 @@ def edit_note(args: list, notebook: Notebook):
 # Шукає нотатки, що містять ключове слово
 @input_error
 def search_notes(args: list, notebook: Notebook):
+    console = Console()
+
     if not args:
-        return "Enter keyword to search notes: note_search keyword"
+        console.print("[yellow]Enter keyword to search notes: note_search keyword[yellow]")
 
     keyword = " ".join(args).lower()
     results = notebook.search_notes(keyword)
 
     if not results:
-        return f"No notes found for keyword: '{keyword}'"
+        console.print( f"[red]No notes found for keyword: '{keyword}'[/red]")
 
-    lines = [f"Notes matching '{keyword}':", "-" * 30]
+    table = Table(title=f"📝 Notes matching '{keyword}'", title_style="bold cyan")
+    table.add_column("№", style="dim", justify="center")
+    table.add_column("Title", style="bold green")
+    table.add_column("Text", style="white")
+    table.add_column("Tags", style="yellow")
+
     for idx, note in enumerate(results, start=1):
-        lines.append(f"{idx}. {note.text}")
-    return "\n".join(lines).strip()
+        tags = ", ".join(note.tags) if note.tags else "no tags"
+        table.add_row(str(idx), note.title, note.text, tags)
 
+    console.print(table)
+    return ""
 
 # ==================== ФУНКЦІЇ ДЛЯ РОБОТИ З EMAIL ===================================
 
@@ -271,7 +297,7 @@ def search_notes(args: list, notebook: Notebook):
 @input_error
 def add_email(args: list, book: AddressBook) -> str:
     if len(args) < 2:
-        return "Enter name and email: add_email Name email@example.com"
+        console.print("[bold yellow]Enter name and email: add_email Name email@example.com[bold yellow]")
 
     name, email = args[0], args[1]
     record_list = book.find(name)
@@ -287,7 +313,7 @@ def add_email(args: list, book: AddressBook) -> str:
 @input_error
 def change_email(args: list, book: AddressBook) -> str:
     if len(args) < 3:
-        return "Enter name, old email, and new email: edit_email Name old@example.com new@example.com"
+        console.print("[bold yellow]Enter name, old email, and new email: edit_email Name old@example.com new@example.com[bold yellow]")
 
     name, old_email, new_email = args[0], args[1], args[2]
     record_list = book.find(name)
@@ -320,19 +346,22 @@ def add_address(args: list, book: AddressBook) -> str:
 
 # Змінює адресу
 @input_error
-def edit_address(args: list, book: AddressBook) -> str:
-    if len(args) < 3:
-        return "Enter name, old address, and new address: edit_address Name Old St 1 New St 2"
+def edit_address(args: list, book):
+    console = Console()
 
-    name, old_address = args[0], args[1]
-    new_address = " ".join(args[2:])
+    if len(args) < 2:
+        return "Enter name and new address: edit-address Name New Address"
+
+    name = args[0]
+    new_address = " ".join(args[1:])
+
     record_list = book.find(name)
     record = record_list[0] if record_list else None
 
-    if not record or not record.address:
-        return f"Contact with name '{name}' not found or address not set."
+    if not record:
+        return f"Contact with name '{name}' not found."
 
-    record.edit_address(old_address, new_address)
+    record.edit_address(new_address)
     return f"Address for {name} updated to: {new_address}"
 
 
@@ -354,19 +383,25 @@ def add_tag(args: list, notebook: Notebook) -> str:
 # Cортує всі нотатки за тегами та виводить їх у зручному вигляді.
 @input_error
 def sort_notes_by_tag(args: list, notebook: Notebook) -> str:
+    console = Console()
+
     if not notebook.notes:
-        return "No notes available."
+        console.print("[yellow]No notes available.[/yellow]")
 
     sorted_notes = notebook.sort_notes_by_tag()
-    lines = ["Sorted Notes by Tag:", "-" * 70]
-    header = f"{'#':<3} {'Title':<20} {'Tags':<20} {'Text'}"
-    lines.append(header)
-    lines.append("-" * 70)
+    table = Table(title="🗂️ Sorted Notes by Tag", title_style="bold magenta")
+
+    table.add_column("№", style="dim", justify="center")
+    table.add_column("Title", style="bold green")
+    table.add_column("Tags", style="yellow")
+    table.add_column("Text", style="white")
+
     for idx, note in enumerate(sorted_notes, start=1):
         tags = ", ".join(note.tags) if note.tags else "no tags"
-        lines.append(f"{idx:<3} {note.title:<20} {tags:<20} {note.text}")
+        table.add_row(str(idx), note.title, tags, note.text)
 
-    return "\n".join(lines).strip()
+    console.print(table)
+    return ""
 
 # ==================ФУНКЦІЯ ДЛЯ ПОШУКУ СХОЖИХ КОМАНД================================
 @input_error
