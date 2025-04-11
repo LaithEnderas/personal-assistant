@@ -103,9 +103,12 @@ class Record:
             self.address.value = None
             
     # 6.4.3 Редагування адреси в контакті
-    def edit_address(self, old_address, new_address):
-        if self.address.value == old_address:
+    def edit_address(self, new_address: str):
+        if self.address:
             self.address.value = new_address
+        else:
+            from .fields import Address
+            self.address = Address(new_address)
         
     # 6.4.4 Пошук дня адреси в контакті
     def find_address(self, address):
