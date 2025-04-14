@@ -36,6 +36,7 @@ def show_command_table():
         ("19", "hello", "-", "Get a greeting from Wokie"),
         ("20", "close / exit", "-", "End the session"),
         ("21", "help", "-", "Show commands table"),
+        ("22", "search-by-tag", "Title Tag", "Show notes with this tag")
     ]
 
     for row in commands:
