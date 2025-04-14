@@ -35,7 +35,7 @@
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/yourname/wokie-assistant.git
+git clone https://github.com/LaithEnderas/personal-assistant.git
 ```
 
 2. Install the dependencies:
