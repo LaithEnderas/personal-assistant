@@ -112,7 +112,9 @@ def command_loop(book, notebook):
             sort_notes_by_tag(args, notebook)
 
         elif command == "search-by-tag":
-            find_notes_by_tag(args, notebook)
+            result = find_notes_by_tag(args, notebook)
+            if result:
+                print_message(Text.from_markup(result), style="bold yellow", title="🔍 Search")
 
         elif command == "help":
             help_command()
