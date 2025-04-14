@@ -49,7 +49,7 @@ def add_contact(args: list, book: AddressBook):
     record = record_list[0] if record_list else None
 
     if not record:
-        record = Record(name_str)  # здесь передаём строку, Record сам создаёт Name
+        record = Record(name_str)  
         book.add_record(record)
         message = "Contact added."
     else:
