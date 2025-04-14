@@ -10,6 +10,7 @@ from cli.commands import (
 from cli.rich_table import print_message
 from models.note import Note, Notebook
 from rich.console import Console
+from rich.text import Text
 
 console = Console()
 
@@ -117,7 +118,9 @@ def command_loop(book, notebook):
         else:
             suggestion = suggest_command(command)
             if suggestion:
-                print_message(f"Did you mean '[bold green]{suggestion}[/bold green]'?", style="yellow", title="🤔 Unrecognized Command")
+                message = Text.from_markup(f"Did you mean [bold green]{suggestion}[/bold green]?")
+                print_message(message, style="yellow", title="🤔 Unrecognized Command")
             else:
-                print_message("Invalid command. Type [bold]help[/bold] to see the list.", style="yellow", title="❌ Unknown Transmission")
+                message = Text.from_markup("Invalid command. Type [bold]help[/bold] to see the list.")
+                print_message(message, style="yellow", title="❌ Unknown Transmission")
 
