@@ -1,6 +1,6 @@
-#  Wokie — Terminal Assistant for Contacts and Notes
+#  Wookiee — Terminal Assistant for Contacts and Notes
 
-**Wokie** is a multifunctional terminal assistant styled in the spirit of *Star Wars*. It helps you manage contacts and notes efficiently with a smart CLI and visual terminal interface.
+**Wookiee** is a multifunctional terminal assistant styled in the spirit of *Star Wars*. It helps you manage contacts and notes efficiently with a smart CLI and visual terminal interface.
 
 ---
 
