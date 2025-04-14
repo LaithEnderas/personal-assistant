@@ -6,13 +6,13 @@ def input_error(func):
             return func(*args, **kwargs)
 
         except ValueError as e:
-            print_message(str(e) or "Неправильне значення.", style="bold red", title="⚠️ Force Disturbance")
+            print_message(str(e) or "Wrong value.", style="bold red", title="⚠️ Force Disturbance")
 
         except KeyError as e:
-            print_message(str(e) or "Контакт не знайдено.", style="bold red", title="🛸 Missing Contact")
+            print_message(str(e) or "Kontact not found.", style="bold red", title="🛸 Missing Contact")
 
         except IndexError as e:
-            print_message(str(e) or "Недостатньо аргументів.", style="bold red", title="📦 Missing Data")
+            print_message(str(e) or "Not enough arguments.", style="bold red", title="📦 Missing Data")
 
         except NameError as e:
             print_message(
@@ -26,3 +26,4 @@ def input_error(func):
                 style="bold red", title="💫 Unexpected Disturbance in the Force")
 
     return wrapper
+
