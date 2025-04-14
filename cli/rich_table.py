@@ -43,15 +43,18 @@ def show_command_table():
 
     console.print(table)
 
-def print_message(message: str, style: str = "bold yellow", title: str = None):
+def print_message(message, style: str = "bold yellow", title: str = None):
     title = title or "📡 Message from Wokie"
 
+    if not isinstance(message, Text):
+        message = Text(message, style=style)
+
     panel = Panel(
-        Align.left(Text(message, style=style)),  
+        Align.left(message),
         title=title,
         title_align="left",
         border_style=style,
-        expand=False, 
+        expand=False,
         padding=(0, 1)
     )
     console.print(panel)
