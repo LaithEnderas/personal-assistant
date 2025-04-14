@@ -407,13 +407,7 @@ def sort_notes_by_tag(args: list, notebook: Notebook) -> str:
 
     console.print(table)
     return ""
-
-# ==================ФУНКЦІЯ ДЛЯ ПОШУКУ СХОЖИХ КОМАНД================================
-@input_error
-def suggest_command(user_input: str) -> str | None:
-    matches = difflib.get_close_matches(user_input, KNOWN_COMMANDS, n=1, cutoff=0.6)
-    return matches[0] if matches else None
-
+    
 def find_notes_by_tag(args: list, notebook: Notebook) -> str:
     console = Console()
 
@@ -439,3 +433,10 @@ def find_notes_by_tag(args: list, notebook: Notebook) -> str:
 
     console.print(table)
     return ""
+# ==================ФУНКЦІЯ ДЛЯ ПОШУКУ СХОЖИХ КОМАНД================================
+@input_error
+def suggest_command(user_input: str) -> str | None:
+    matches = difflib.get_close_matches(user_input, KNOWN_COMMANDS, n=1, cutoff=0.6)
+    return matches[0] if matches else None
+
+
