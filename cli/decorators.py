@@ -21,7 +21,7 @@ def input_error(func):
 
         except Exception as e:
             print_message(
-                "Wokie encountered an unknown galactic anomaly.\n"
+                "Wookiee encountered an unknown galactic anomaly.\n"
                 f"[dim]({type(e).__name__}: {e})[/dim]",
                 style="bold red", title="💫 Unexpected Disturbance in the Force")
 
