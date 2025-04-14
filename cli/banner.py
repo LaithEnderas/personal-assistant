@@ -6,7 +6,7 @@ def show_welcome_banner():
     console = Console()
 
     message = """
-[bold cyan]🛸 Wokie has awakened...[/bold cyan]
+[bold cyan]🛸 Wookiee has awakened...[/bold cyan]
 [bold white]Welcome, Young Padawan![/bold white]
 
 ⚔️  Your mission is to master the commands of the Force.
@@ -17,7 +17,7 @@ def show_welcome_banner():
 """
     banner = Panel.fit(
         Align.center(message, vertical="middle"),
-        title="[bold bright_blue]Wokie Assistant[/bold bright_blue]",
+        title="[bold bright_blue]Wookiee Assistant[/bold bright_blue]",
         border_style="magenta"
     )
 
@@ -30,7 +30,7 @@ def show_welcome_banner():
     console = Console()
 
     message = """
-[bold cyan]🛸 Wokie has awakened...[/bold cyan]
+[bold cyan]🛸 Wookiee has awakened...[/bold cyan]
 [bold white]Welcome, Young Padawan![/bold white]
 
 ⚔️  Your mission is to master the commands of the Force.
@@ -41,7 +41,7 @@ def show_welcome_banner():
 """
     banner = Panel.fit(
         Align.center(message, vertical="middle"),
-        title="[bold bright_blue]Wokie Assistant[/bold bright_blue]",
+        title="[bold bright_blue]Wookiee Assistant[/bold bright_blue]",
         border_style="magenta"
     )
 
