@@ -1,5 +1,3 @@
-# Personal Assistant
-
 #  Wokie — Terminal Assistant for Contacts and Notes
 
 **Wokie** is a multifunctional terminal assistant styled in the spirit of *Star Wars*. It helps you manage contacts and notes efficiently with a smart CLI and visual terminal interface.
@@ -117,4 +115,3 @@ personal-assistant/
 - Oleksandr  
 - Alina  
 - Iryna  
-
