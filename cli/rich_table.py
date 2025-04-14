@@ -7,7 +7,7 @@ from rich.align import Align
 console = Console()
 
 def show_command_table():
-    table = Table(title="[bold magenta]🛸 Wokie Command Guide - Use the Force, User![/bold magenta]")
+    table = Table(title="[bold magenta]🛸 Wookiee Command Guide - Use the Force, User![/bold magenta]")
 
     table.add_column("№", style="cyan", justify="center")
     table.add_column("Command", style="bold green")
@@ -33,7 +33,7 @@ def show_command_table():
         ("16", "edit-address", "Name Old New", "Edit contact's address"),
         ("17", "add-tag", "Title Tag", "Add tag to note"),
         ("18", "sort-notes-by-tag", "-", "Sort and show notes by tag"),
-        ("19", "hello", "-", "Get a greeting from Wokie"),
+        ("19", "hello", "-", "Get a greeting from Wookiee"),
         ("20", "close / exit", "-", "End the session"),
         ("21", "help", "-", "Show commands table"),
         ("22", "search-by-tag", "Title Tag", "Show notes with this tag")
@@ -45,7 +45,7 @@ def show_command_table():
     console.print(table)
 
 def print_message(message, style: str = "bold yellow", title: str = None):
-    title = title or "📡 Message from Wokie"
+    title = title or "📡 Message from Wookiee"
 
     if not isinstance(message, Text):
         message = Text(message, style=style)
