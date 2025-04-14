@@ -38,7 +38,9 @@ def command_loop(book, notebook):
                 print_message(result, style="bold green", title="🔁 Contact Updated")
 
         elif command == "search":
-            search_contacts(args, book)
+            result = search_contacts(args, book)
+            if result:
+                print_message(result, style="bold yellow", title="🔍 Search")
 
         elif command == "all":
             show_all_contacts(book)
