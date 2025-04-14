@@ -1,83 +1,103 @@
-# Personal Assistant
+#  Wokie — Terminal Assistant for Contacts and Notes
 
-A command-line assistant application designed to help manage contacts and notes efficiently.
+**Wokie** is a multifunctional terminal assistant styled in the spirit of *Star Wars*. It helps you manage contacts and notes efficiently with a smart CLI and visual terminal interface.
 
-## Features
+---
 
-### Contact Book
+##  Features
 
-- Add new contacts with name and phone number
-- Edit or change existing phone numbers
-- Delete contacts
-- Add, edit, or delete emails and addresses
-- Add and view birthdays
-- Search contacts by any field
-- Show all contacts
-- Display upcoming birthdays in the next _n_ days
+###  Contacts
+- Add new contacts and phone numbers  
+- Edit and remove phone numbers  
+- Add/edit email addresses, birthdays, and physical addresses  
+- View all contacts in a table  
+- Search by name, phone, email, address, or birthday  
+- Show upcoming birthdays within a chosen number of days  
 
-### Notebook
+###  Notes
+- Create and delete notes by title  
+- Edit note content  
+- Search by keywords in title or body  
+- Add and remove tags  
+- Sort and filter notes by tags  
 
-- Add and delete notes with title and body text
-- Search notes by keywords
-- Add tags to notes
-- Search and sort notes by tags
+###  Smart CLI
+- Fuzzy matching for mistyped commands  
+- `help` command with a complete table of available actions  
+- Rich terminal interface via the `rich` library  
+- Welcome banner on launch  
+- Styled messages, hints, and error feedback  
 
-### Extra Features
+---
 
-- Fuzzy command matching: bot will guess user intent for incorrect or partial commands
-- Modular design: easily extendable and testable structure
+##  Installation & Launch
 
-## Technologies
+1. Clone the repository:
 
-- Python 3.10+
-- Built-in libraries:
-  - dataclasses
-  - pickle
-  - os
-  - difflib
-
-## How to Run
-
-1. Clone or download this repository
-2. Run the assistant:
-
+```bash
+git clone https://github.com/yourname/wokie-assistant.git
 ```
+
+2. Install the dependencies:
+
+```bash
+pip install -r requirements.txt
+```
+
+3. Run the assistant:
+
+```bash
 python main.py
 ```
 
-## Commands Reference
+---
 
-| Command                        | Description                                 |
-|-------------------------------|---------------------------------------------|
-| `add Name 0123456789`         | Add a new contact                           |
-| `change Name old new`         | Change a phone number                       |
-| `delete Name`                 | Delete a contact                            |
-| `search keyword`              | Search contacts                             |
-| `add-birthday Name 01.01.2000`| Add birthday to contact                     |
-| `birthdays 7`                 | Show upcoming birthdays in the next 7 days  |
-| `add-note Title Body`         | Add a new note                              |
-| `delete-note Title`           | Delete a note by title                      |
-| `search-note keyword`         | Search notes by keyword                     |
-| `add-tag Title TagName`       | Add a tag to a note                         |
-| `search-by-tag TagName`       | Search notes by tag                         |
-| `sort-notes-by-tag`           | Sort notes by assigned tags                 |
-| `exit` or `close`             | Exit the assistant                          |
+##  Command Reference
 
-## Project Structure
+| Command               | Arguments                     | Description                            |
+|----------------------|-------------------------------|----------------------------------------|
+| `add`                | Name Phone                    | Add a new contact or phone number      |
+| `change`             | Name OldPhone NewPhone        | Edit existing phone number             |
+| `delete`             | Name                          | Delete a contact                       |
+| `search`             | Keyword                       | Search contacts                        |
+| `all`                | —                             | Show all contacts                      |
+| `add-birthday`       | Name DD.MM.YYYY               | Add birthday to a contact              |
+| `show-birthday`      | Name                          | Show contact's birthday                |
+| `birthdays`          | N (days)                      | Show upcoming birthdays                |
+| `add-email`          | Name Email                    | Add email to a contact                 |
+| `edit-email`         | Name OldEmail NewEmail        | Edit email                             |
+| `add-address`        | Name Address                  | Add address to a contact               |
+| `edit-address`       | Name NewAddress               | Edit address                           |
+| `add-note`           | Title Text                    | Add a note                             |
+| `edit-note`          | Title NewText                 | Edit note                              |
+| `delete-note`        | Title                         | Delete note                            |
+| `search-note`        | Keyword                       | Search notes                           |
+| `add-tag`            | Title Tag                     | Add tag to a note                      |
+| `search-by-tag`      | Tag                           | Find notes with a specific tag         |
+| `sort-notes-by-tag`  | —                             | Show notes sorted by tags              |
+| `hello`              | —                             | Greet the assistant                    |
+| `help`               | —                             | Show available commands                |
+| `exit / close`       | —                             | Exit the assistant                     |
+
+---
+
+##  Project Structure
 
 ```
 personal-assistant/
 │
 ├── cli/
+│   ├── banner.py
 │   ├── commands.py
-│   ├── loop.py
 │   ├── decorators.py
-│   └── parser.py
+│   ├── loop.py
+│   ├── parser.py
+│   └── rich_table.py
 │
 ├── models/
 │   ├── address_book.py
-│   ├── note.py
 │   ├── fields.py
+│   ├── note.py
 │   └── record.py
 │
 ├── storage/
@@ -87,7 +107,11 @@ personal-assistant/
 └── README.md
 ```
 
-## Team Members
+---
 
-- Team Lead: Bohdan
-- Developers: Oleksandr, Alina, Iryna
+##  Authors
+
+- Bohdan - Team Lead
+- Oleksandr  
+- Alina  
+- Iryna  
