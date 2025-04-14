@@ -44,11 +44,13 @@ def show_command_table():
 
     console.print(table)
 
-def print_message(message, style: str = "bold yellow", title: str = None):
-    title = title or "📡 Message from Wookiee"
+def print_message(message: str | Text, style: str = "bold yellow", title: str = None):
+    title = title or "📡 Message from Wokie"
+    if message is None:
+        message = "[red]Something went wrong.[/red]"
 
     if not isinstance(message, Text):
-        message = Text(message, style=style)
+        message = Text.from_markup(str(message))
 
     panel = Panel(
         Align.left(message),
