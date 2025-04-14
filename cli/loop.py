@@ -48,7 +48,10 @@ def command_loop(book, notebook):
         elif command == "add-birthday":
             result = add_birthday(args, book)
             if result:
-                print_message(result, style="bold red", title="🎂 Birthday Set")
+                if "added" in result.lower():
+                    print_message(result, style="bold green", title=":birthday: Birthday Set")
+                else:
+                    print_message(result, style="bold red", title=":birthday: Birthday Set")
 
         elif command == "show-birthday":
             result = show_birthday(args, book)
