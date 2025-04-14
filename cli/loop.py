@@ -25,7 +25,7 @@ def command_loop(book, notebook):
             break
 
         elif command == "hello":
-            print_message("How can I help you, Jedi?", style="bold blue", title="🤖 Wokie Ready")
+            print_message("How can I help you, Jedi?", style="bold blue", title="🤖 Wookiee Ready")
 
         elif command == "add":
             result = add_contact(args, book)
