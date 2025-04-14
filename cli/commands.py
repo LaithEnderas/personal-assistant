@@ -37,18 +37,19 @@ def help_command(*args):
 
 # Додає новий контакт або телефон до існуючого
 @input_error
+@input_error
 def add_contact(args: list, book: AddressBook):
     if len(args) < 2:
         return "Enter name and phone: add Name 0123456789"
 
-    name = args[0]
+    name_str = args[0]
     phone = args[1]
 
-    record_list = book.find(name)
+    record_list = book.find(name_str)
     record = record_list[0] if record_list else None
 
     if not record:
-        record = Record(Name(name))
+        record = Record(name_str)  # здесь передаём строку, Record сам создаёт Name
         book.add_record(record)
         message = "Contact added."
     else:
@@ -56,6 +57,7 @@ def add_contact(args: list, book: AddressBook):
 
     record.add_phone(phone)
     return message
+
 
 # Змінює старий контакт на новий
 @input_error
